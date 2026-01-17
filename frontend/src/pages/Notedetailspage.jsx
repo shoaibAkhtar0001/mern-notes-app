@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import toast from "react-hot-toast";
 import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
-import axios, { HttpStatusCode } from "axios";
+import axios from "axios";
 
 const NoteDetailPage = () => {
   const [note, setNote] = useState(null);
@@ -11,13 +10,14 @@ const NoteDetailPage = () => {
   const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/notes/${id}`);
+        const res = await axios.get(
+          `https://mern-notes-app-1-mb9m.onrender.com/api/notes/${id}`
+        );
         setNote(res.data);
       } catch (error) {
         console.log("Error in fetching note", error);
@@ -34,7 +34,9 @@ const NoteDetailPage = () => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
     try {
-      await axios.delete(`http://localhost:5001/api/notes/${id}`);
+      await axios.delete(
+        `https://mern-notes-app-1-mb9m.onrender.com/api/notes/${id}`
+      );
       toast.success("Note deleted");
       navigate("/");
     } catch (error) {
@@ -52,7 +54,10 @@ const NoteDetailPage = () => {
     setSaving(true);
 
     try {
-      await axios.put(`http://localhost:5001/api/notes/${id}`, note);
+      await axios.put(
+        `https://mern-notes-app-1-mb9m.onrender.com/api/notes/${id}`,
+        note
+      );
       toast.success("Note updated successfully");
       navigate("/");
     } catch (error) {
@@ -72,7 +77,7 @@ const NoteDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(125%_125%_at_50%_80%,#000000_60%,#FF6B6B40_90%,#FF8C0040_100%)] from-gray-900 via-gray-800 to-black text-gray-100">
+    <div className="min-h-screen bg-[radial-gradient(125%_125%_at_50%_80%,#000000_60%,#FF6B6B40_90%,#FF8C0040_100%)] text-gray-100">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-8">
@@ -100,10 +105,11 @@ const NoteDetailPage = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Note title"
-                  className="w-full px-4 py-2 rounded-lg bg-gray-900 text-gray-100 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 rounded-lg bg-gray-900 text-gray-100 border border-gray-700"
                   value={note.title}
-                  onChange={(e) => setNote({ ...note, title: e.target.value })}
+                  onChange={(e) =>
+                    setNote({ ...note, title: e.target.value })
+                  }
                 />
               </div>
 
@@ -112,10 +118,11 @@ const NoteDetailPage = () => {
                   Content
                 </label>
                 <textarea
-                  placeholder="Write your note here..."
-                  className="w-full px-4 py-2 rounded-lg bg-gray-900 text-gray-100 border border-gray-700 h-40 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 rounded-lg bg-gray-900 text-gray-100 border border-gray-700 h-40 resize-none"
                   value={note.content}
-                  onChange={(e) => setNote({ ...note, content: e.target.value })}
+                  onChange={(e) =>
+                    setNote({ ...note, content: e.target.value })
+                  }
                 />
               </div>
 
@@ -135,4 +142,5 @@ const NoteDetailPage = () => {
     </div>
   );
 };
+
 export default NoteDetailPage;
